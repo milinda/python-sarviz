@@ -7,3 +7,11 @@ This is an extension of [python-sar](https://github.com/casastorta/python-sar). 
 ```
 sar -A -f <sar_binary_log> > <sar_data.txt>
 ```
+
+## Example
+
+```python
+insar = parser.Parser('./data/sample.log')
+sar_viz = viz.Visualization(insar.get_sar_info(), paging=True, network=True, disk=True)
+sar_viz.save('sample.pdf')
+```
