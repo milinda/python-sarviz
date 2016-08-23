@@ -11,6 +11,9 @@ sar -A -f <sar_binary_log> > <sar_data.txt>
 ## Example
 
 ```python
+from sar import parser
+from sar import viz
+
 insar = parser.Parser('./data/sample.log')
 sar_viz = viz.Visualization(insar.get_sar_info(), paging=True, network=True, disk=True)
 sar_viz.save('sample.pdf')
