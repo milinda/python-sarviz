@@ -13,7 +13,7 @@ from sar import viz
 def main(in_sar_log, output_path):
     insar = parser.Parser(in_sar_log)
     sar_viz = viz.Visualization(insar.get_sar_info(), paging=True, network=True, disk=True)
-    sar_viz.save(output_path)
+    sar_viz.save(output_path, output_type=viz.Visualization.PNG_OUTPUT)
 
 
 def set_include_path():

@@ -274,6 +274,10 @@ class Visualization(object):
             plt.setp(lg_txts, fontsize=10)
 
         fig.tight_layout()
-        pp = PdfPages(output_path)
-        pp.savefig()
-        pp.close()
+        if output_type == Visualization.PDF_OUTPUT:
+            pp = PdfPages(output_path)
+            pp.savefig()
+            pp.close()
+        elif output_type == Visualization.PNG_OUTPUT:
+            fig.savefig(output_path)
+            plt.close(fig)
