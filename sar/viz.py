@@ -215,7 +215,65 @@ class Visualization(object):
             plt.setp(lg_txts, fontsize=10)
             plt_idx += 1
 
-            fig.tight_layout()
-            pp = PdfPages(output_path)
-            pp.savefig()
-            pp.close()
+        if self.enable_paging:
+            plt.subplot(self.num_plots, 1, plt_idx)
+            plt.xticks(self.xticks, self.xtick_labels,
+                       rotation=Visualization.PLT_XTICK_LABEL_ROTATION)
+            plt.plot(self.x_data, self.page_faults_per_sec, label='faults/s')
+            plt.plot(self.x_data, self.major_page_faults_per_sec, label='major faults/s')
+            plt.xlabel('time')
+            plt.ylabel('faults/s')
+            plt.title('Page Faults')
+            lg = plt.legend(frameon=False)
+            lg_txts = lg.get_texts()
+            plt.setp(lg_txts, fontsize=10)
+            plt_idx += 1
+
+            plt.subplot(self.num_plots, 1, plt_idx)
+            plt.xticks(self.xticks, self.xtick_labels,
+                       rotation=Visualization.PLT_XTICK_LABEL_ROTATION)
+            plt.plot(self.x_data, self.page_ins_per_sec, label='page ins/s')
+            plt.plot(self.x_data, self.page_outs_per_sec, label='page outs/s')
+            plt.xlabel('time')
+            plt.ylabel('KB/s')
+            plt.title('Page Ins and Outs')
+            lg = plt.legend(frameon=False)
+            lg_txts = lg.get_texts()
+            plt.setp(lg_txts, fontsize=10)
+            plt_idx += 1
+
+        if self.enable_net:
+            plt.subplot(self.num_plots, 1, plt_idx)
+            plt.xticks(self.xticks, self.xtick_labels,
+                       rotation=Visualization.PLT_XTICK_LABEL_ROTATION)
+            for iface in self.kb_rcv_per_sec.keys():
+                plt.plot(self.x_data, self.kb_rcv_per_sec[iface], label='{}-rx'.format(iface))
+            for iface in self.kb_trans_per_sec.keys():
+                plt.plot(self.x_data, self.kb_trans_per_sec[iface], label='{}-tx'.format(iface))
+            plt.xlabel('time')
+            plt.ylabel('KB/s')
+            plt.title('Network Usage')
+            lg = plt.legend(loc=1,
+                            ncol=len(self.kb_rcv_per_sec.keys()), frameon=False)
+            lg.get_frame().set_alpha(0)
+            lg_txts = lg.get_texts()
+            plt.setp(lg_txts, fontsize=10)
+            plt_idx += 1
+
+        if self.enable_disk:
+            plt.subplot(self.num_plots, 1, plt_idx)
+            plt.xticks(self.xticks, self.xtick_labels,
+                       rotation=Visualization.PLT_XTICK_LABEL_ROTATION)
+            plt.plot(self.x_data, self.breads_per_sec, label='reads')
+            plt.plot(self.x_data, self.bwrites_per_sec, label='writes')
+            plt.xlabel('time')
+            plt.ylabel('blocks/s')
+            plt.title('Disk IO')
+            lg = plt.legend(frameon=False)
+            lg_txts = lg.get_texts()
+            plt.setp(lg_txts, fontsize=10)
+
+        fig.tight_layout()
+        pp = PdfPages(output_path)
+        pp.savefig()
+        pp.close()
