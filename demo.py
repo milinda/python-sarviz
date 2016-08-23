@@ -20,4 +20,8 @@ def set_include_path():
 
 if __name__ == "__main__":
 	set_include_path()
+	
+	if not os.path.isfile(sys.argv[1]):
+		raise 'Cannot find SAR log file {}'.format(sys.argv[1])
+
 	main(sys.argv[1], sys.argv[2])
